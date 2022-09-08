@@ -1,13 +1,10 @@
 let form = document.querySelector('.js-form'),
-  formInputs = document.querySelectorAll('.js-input'),
-  inputFirstName = document.querySelector('.js-first-name'),
-  inputSecondName = document.querySelector('.js-second-name'),
-  inputEmail = document.querySelector('.js-email'),
-  inputPassword = document.querySelector('.js-password'),
-  inputConfirmPassword = document.querySelector('.js-confirm-password'),
-  selectDay = document.querySelector('.js-day'),
-  selectMonth = document.querySelector('.js-month'),
-  selectYear = document.querySelector('.js-year'),
+  getName = document.querySelector('.js-first-name'),
+  getSecondName = document.querySelector('.js-second-name'),
+  getEmail = document.querySelector('.js-email'),
+  getPassword = document.querySelector('.js-password'),
+  getConfirmPassword = document.querySelector('.js-confirm-password'),
+  getAge = document.querySelector('.js-age'),
   nameMistake = document.querySelector('.js-name-mistake'),
   secondNameMistake = document.querySelector('.js-second-name-mistake'),
   emailMistake = document.querySelector('.js-email-mistake'),
@@ -18,115 +15,125 @@ let form = document.querySelector('.js-form'),
 
 
 const validateName = (str) => {
-  const re = /^([А-Я]{1}[а-яё]{1,35}|[A-Z]{1}[a-z]{1,35})$/;
-  return re.test(str);
+  const regExp = /^([А-Я]{1}[а-яё]{1,35}|[A-Z]{1}[a-z]{1,35})$/;
+  return regExp.test(str);
 };
-const validateEmail = (email) => {
-  const re =
+const validateEmail = (str) => {
+  const regExp =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  return re.test(email);
+  return regExp.test(str);
 };
 const validatePassword = (str) => {
-  const re = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}/g;
-  return re.test(str);
+  const regExp = /(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}/g;
+  return regExp.test(str);
 };
 
-const isAdult = (selectDay, selectMonth, selectYear) => {
-  let birthDay = selectDay.value,
-    birthMonth = selectMonth.value,
-    birthYear = selectYear.value;
-  let dateOfBirthday = `${birthYear}-${birthMonth}-${birthDay}`;
-  let dateOfBirthdayParse = Date.parse(dateOfBirthday);
+
+const isAdult = (str) => {
+  let dateOfBirthdayParse = Date.parse(str);
   let dateNow = Date.now();
   const adultYearsInMilliseconds = 567648000000;
   return (dateNow - dateOfBirthdayParse) > adultYearsInMilliseconds ? true : false;
 };
 
 form.onsubmit = () => {
-  let firstName = inputFirstName.value,
-    secondName = inputSecondName.value,
-    emailVal = inputEmail.value,
-    passwordVal = inputPassword.value,
-    confirmPasswordVal = inputConfirmPassword.value;
+  let nameVal = getName.value,
+    secondNameVal = getSecondName.value,
+    emailVal = getEmail.value,
+    passwordVal = getPassword.value,
+    confirmPasswordVal = getConfirmPassword.value,
+    ageVal = getAge.value;
 
   const mistakes = {};
 
-  if (!validateName(firstName) || inputFirstName === '') {
-    console.log('first name not valid');
+  // function builder(validation, input, mistake) {
+  //   const mistakes = {};
+  //   const inputVal = input.value;
+  //   if (!validation(inputVal) || input === '') {
+  //     mistake.classList.add('mistake-error');
+  //     input.classList.add('error');
+  //     mistakes.input = 1;
+  //   }
+  //   else {
+  //     mistake.classList.remove('mistake-error');
+  //     input.classList.remove('error');
+  //     delete mistakes.input;
+  //   }
+  // };
+
+  // builder(validateName, getName, nameMistake);
+  // builder(validateName, getSecondName, secondNameMistake);
+  // builder(validateEmail, getEmail, emailMistake);
+  // builder(validatePassword, getPassword, passwordMistake);
+  // builder(isAdult, getAge, ageMistake);
+
+  if (!validateName(nameVal) || getName === '') {
     nameMistake.classList.add('mistake-error');
-    inputFirstName.classList.add('error');
-    mistakes.inputFirstName = 1;
+    getName.classList.add('error');
+    mistakes.getName = 1;
   }
   else {
     nameMistake.classList.remove('mistake-error');
-    inputFirstName.classList.remove('error');
-    delete mistakes.inputFirstName;
-  };
-
-  if (!validateName(secondName) || inputSecondName === '') {
-    console.log('second name not valid');
-    secondNameMistake.classList.add('mistake-error')
-    inputSecondName.classList.add('error');
-    mistakes.inputSecondName = 1;
-  }
-  else {
-    secondNameMistake.classList.remove('mistake-error')
-    inputSecondName.classList.remove('error');
-    delete mistakes.inputSecondName;
+    getName.classList.remove('error');
+    delete mistakes.getName;
   };
   
-  if (!validateEmail(emailVal) ||inputEmail === '') {
-    console.log('email not valid');
+  if (!validateName(secondNameVal) || getSecondName === '') {
+    secondNameMistake.classList.add('mistake-error');
+    getSecondName.classList.add('error');
+    mistakes.getSecondName = 1;
+  }
+  else {
+    secondNameMistake.classList.remove('mistake-error');
+    getSecondName.classList.remove('error');
+    delete mistakes.getSecondName;
+  };
+  
+  if (!validateEmail(emailVal) || getEmail === '') {
     emailMistake.classList.add('mistake-error');
-    inputEmail.classList.add('error');
-    mistakes.inputEmail = 1;
+    getEmail.classList.add('error');
+    mistakes.getEmail = 1;
   }
   else {
     emailMistake.classList.remove('mistake-error');
-    inputEmail.classList.remove('error');
-    delete mistakes.inputEmail;
+    getEmail.classList.remove('error');
+    delete mistakes.getEmail;
   };
-
-  if (!validatePassword(passwordVal) || inputPassword === '') {
-    console.log('password not valid');
+  
+  if (!validatePassword(passwordVal) || getPassword === '') {
     passwordMistake.classList.add('mistake-error');
-    inputPassword.classList.add('error');
-    mistakes.inputPassword = 1;
+    getPassword.classList.add('error');
+    mistakes.getPassword = 1;
   }
   else {
     passwordMistake.classList.remove('mistake-error');
-    inputPassword.classList.remove('error');
-    delete mistakes.inputPassword;
+    getPassword.classList.remove('error');
+    delete mistakes.getPassword;
   };
 
-  if (passwordVal !== confirmPasswordVal || inputConfirmPassword === '') {
+  if (passwordVal !== confirmPasswordVal || confirmPasswordVal === '') {
     console.log('password not confirm');
     confirmPasswordMistake.classList.add('mistake-error');
-    inputConfirmPassword.classList.add('error');
-    mistakes.inputConfirmPassword = 1;
+    getConfirmPassword.classList.add('error');
+    mistakes.getConfirmPassword = 1;
   }
   else {
     confirmPasswordMistake.classList.remove('mistake-error');
-    inputConfirmPassword.classList.remove('error');
-    delete mistakes.inputConfirmPassword;
+    getConfirmPassword.classList.remove('error');
+    delete mistakes.getConfirmPassword;
   };
 
-  if (!isAdult(selectDay, selectMonth, selectYear)) {
-    ageMistake.classList.add('mistake-error')
-    selectDay.classList.add('select-error');
-    selectMonth.classList.add('select-error');
-    selectYear.classList.add('select-error');
-    mistakes.ageMistake = 1;
+  if (!isAdult(ageVal) || getAge === '') {
+    ageMistake.classList.add('mistake-error');
+    getAge.classList.add('error');
+    mistakes.getAge = 1;
   }
   else {
-    selectDay.classList.remove('select-error');
-    selectMonth.classList.remove('select-error');
-    selectYear.classList.remove('select-error');
-    ageMistake.classList.remove('mistake-error')
-    delete mistakes.ageMistake;
+    ageMistake.classList.remove('mistake-error');
+    getAge.classList.remove('error');
+    delete mistakes.getAge;
   };
-  
-  console.log(Object.keys(mistakes).length);
+
   if (Object.keys(mistakes).length !== 0) {
     return false;
   }
